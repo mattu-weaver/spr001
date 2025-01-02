@@ -17,7 +17,7 @@ class FoodSprite(pygame.sprite.Sprite):
         Constructor for the FoodSprite class.
         '''
         super().__init__()
-        self.size = config.sprite_size
+        self.size = config.critter_size
         self.image = pygame.Surface((self.size, self.size))
         self.image.fill([0, 255, 0])
         self.rect = self.image.get_rect()

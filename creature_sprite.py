@@ -26,20 +26,20 @@ class CreatureSprite(pygame.sprite.Sprite):
         super().__init__()
         self.dx = 0
         self.dy = 0
-        self.size = config.sprite_size
+        self.size = config.critter_size
         self.image = pygame.Surface((self.size, self.size))
         self.image.fill([0, 255, 0])
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.log = config.logger
 
-        self.base_speed = config.sprite_base_speed
-        self.min_speed = config.sprite_min_speed
-        self.max_speed = config.sprite_max_speed
+        self.base_speed = config.critter_base_speed
+        self.min_speed = config.critter_min_speed
+        self.max_speed = config.critter_max_speed
         self.speed = self.get_speed()
 
         self.angle = random.uniform(0, 2 * math.pi)
-        energy = config.sprite_energy
+        energy = config.critter_energy
         self.energy = energy
 
         self.initial_energy = energy
@@ -78,8 +78,8 @@ class CreatureSprite(pygame.sprite.Sprite):
 
     def deplete_energy(self):
         # Adjust the rate to make smaller critters lose energy at a balanced rate
-        rate = self.speed * self.size * config.sprite_energy_scale
-        size_factor = (config.sprite_size / self.size) ** 0.5  # Use square root to reduce the impact
+        rate = self.speed * self.size * config.critter_energy_scale
+        size_factor = (config.critter_size / self.size) ** 0.5  # Use square root to reduce the impact
         self.energy -= rate * size_factor
 
     def check_food_collision(self, food_sprites):
@@ -89,7 +89,7 @@ class CreatureSprite(pygame.sprite.Sprite):
         collided_food = pygame.sprite.spritecollideany(self, food_sprites)
         if collided_food:
             energy_gain = collided_food.get_energy_value()
-            self.energy = min(self.energy + energy_gain, config.sprite_max_energy)
+            self.energy = min(self.energy + energy_gain, config.critter_max_energy)
             collided_food.kill()
 
     def update(self, method: UpdateMethod, food_sprites):
@@ -112,6 +112,8 @@ class CreatureSprite(pygame.sprite.Sprite):
 
     def get_speed(self):
         scaling_factor = 1 / math.log(self.size + 10)  # Adjust the "+ 2" to control the scaling curve
+
+        self.log.debug(f"Speed scaling factor is {scaling_factor}, size is {self.size}")
 
         # Calculate the scaled speed
         scaled_speed = self.base_speed * scaling_factor

@@ -24,6 +24,28 @@ class Config:
 
 
     @property
+    def sidebar_width(self) -> int:
+        '''
+        Read-only: Returns the width of the sidebar from the application config file.
+        '''
+        return int(self._config['screen']['sidebar_width'])
+
+    @property
+    def sidebar_opacity(self) -> int:
+        '''
+        Read-only: Returns the width of the sidebar from the application config file.
+        '''
+        return int(self._config['screen']['sidebar_opacity'])
+
+    @property
+    def sidebar_colour(self) -> tuple:
+        '''
+        Read-only: Returns the opacity for the sidebar.
+        '''
+        return tuple(self._config['screen']['sidebar_colour'])
+
+
+    @property
     def logger(self):
         '''
         Read-only: Returns a logger object.
@@ -36,6 +58,13 @@ class Config:
         Read-only: Returns the screen width from the application config file.
         '''
         return int(self._config['screen']['width'])
+
+    @property
+    def spawn_buffer_size(self) -> int:
+        '''
+        Read-only: Returns the spawn buffer size.
+        '''
+        return int(self._config['screen']['spawn_buffer'])
 
     @property
     def screen_height(self) -> int:
@@ -66,93 +95,100 @@ class Config:
         return str(self._config['loguru']['level'])
 
     @property
-    def sprite_fixed_size(self) -> int:
+    def critter_fixed_size(self) -> int:
         '''
-        Read-only: Returns the fixed size of a sprite.
+        Read-only: Returns the fixed size of a critter.
         '''
-        return int(self._config['sprite']['fixed_size'])
+        return int(self._config['critter']['fixed_size'])
 
     @property
-    def sprite_min_energy(self) -> float:
+    def critter_initial_count(self) -> int:
         '''
-        Read-only: Returns the default speed of a sprite.
+        Read-only: Returns the initial number of critters.
         '''
-        return float(self._config['sprite']['min_energy'])
+        return int(self._config['critter']['initial_count'])
 
     @property
-    def sprite_max_energy(self) -> float:
+    def critter_min_energy(self) -> float:
         '''
-        Read-only: Returns the default speed of a sprite.
+        Read-only: Returns the default speed of a critter.
         '''
-        return float(self._config['sprite']['max_energy'])
+        return float(self._config['critter']['min_energy'])
 
     @property
-    def sprite_energy(self) -> float:
+    def critter_max_energy(self) -> float:
         '''
-        Read-only: Returns an initial energy for a sprite.
+        Read-only: Returns the default speed of a critter.
         '''
-        return random.uniform(self._config['sprite']['min_energy'], self._config['sprite']['max_energy'])
+        return float(self._config['critter']['max_energy'])
 
     @property
-    def sprite_has_random_size(self) -> bool:
+    def critter_energy(self) -> float:
         '''
-        Read-only: Returns a flag that determines if sprites are given a random size.
+        Read-only: Returns an initial energy for a critter.
         '''
-        return bool(self._config['sprite']['random_size'])
+        return random.uniform(self._config['critter']['min_energy'], self._config['critter']['max_energy'])
+
+    @property
+    def critter_has_random_size(self) -> bool:
+        '''
+        Read-only: Returns a flag that determines if critters are given a random size.
+        '''
+        return bool(self._config['critter']['random_size'])
 
 
     @property
-    def sprite_min_size(self) -> int:
+    def critter_min_size(self) -> int:
         '''
-        Read-only: Returns the minimum initial size of a sprite.
+        Read-only: Returns the minimum initial size of a critter.
         '''
-        return int(self._config['sprite']['min_size'])
+        return int(self._config['critter']['min_size'])
 
     @property
-    def sprite_max_size(self) -> int:
+    def critter_max_size(self) -> int:
         '''
-        Read-only: Returns the maximum initial size of a sprite.
+        Read-only: Returns the maximum initial size of a critter.
         '''
-        return int(self._config['sprite']['max_size'])
+        return int(self._config['critter']['max_size'])
 
     @property
-    def sprite_size(self) -> int:
+    def critter_size(self) -> int:
         '''
-        Read-only: Returns an initial size for a sprite.
+        Read-only: Returns an initial size for a critter.
         '''
-        if self.sprite_has_random_size:
-            return int(random.uniform(self._config['sprite']['min_size'], self._config['sprite']['max_size']))
+        if self.critter_has_random_size:
+            return int(random.uniform(self._config['critter']['min_size'], self._config['critter']['max_size']))
         else:
-            return self.sprite_fixed_size
+            return self.critter_fixed_size
 
     @property
-    def sprite_energy_scale(self) -> float:
+    def critter_energy_scale(self) -> float:
         '''
-        Read-only: Returns a scalar value for sprite energy calculations.
+        Read-only: Returns a scalar value for critter energy calculations.
         '''
-        return float(self._config['sprite']['energy_scale'])
+        return float(self._config['critter']['energy_scale'])
     
     @property
-    def sprite_base_speed(self) -> int:
+    def critter_base_speed(self) -> int:
         '''
-        Read-only: Returns the base speed of a sprite.
+        Read-only: Returns the base speed of a critter.
         '''
-        return int(self._config['sprite']['base_speed'])
+        return int(self._config['critter']['base_speed'])
     
     @property
-    def sprite_min_speed(self) -> int:
+    def critter_min_speed(self) -> int:
         '''
-        Read-only: Returns the minimum speed for the largest sprite.
+        Read-only: Returns the minimum speed for the largest critter.
         '''
-        return int(self._config['sprite']['min_speed'])
+        return int(self._config['critter']['min_speed'])
     
 
     @property
-    def sprite_max_speed(self) -> int:
+    def critter_max_speed(self) -> int:
         '''
-        Read-only: RReturns the maximum speed for the msallest sprite.
+        Read-only: Returns the maximum speed for the msallest critter.
         '''
-        return int(self._config['sprite']['max_speed'])
+        return int(self._config['critter']['max_speed'])
     
     @property
     def food_min_size(self) -> int:
@@ -160,6 +196,13 @@ class Config:
         Read-only: Returns the minimum size of food.
         '''
         return int(self._config['food']['min_size'])
+
+    @property
+    def food_initial_count(self) -> int:
+        '''
+        Read-only: Returns the initial amount of food.
+        '''
+        return int(self._config['food']['initial_count'])
 
     @property
     def food_max_size(self) -> int:

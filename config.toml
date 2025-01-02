@@ -16,15 +16,12 @@ level = "DEBUG"            # The level of logging to record.
 
 [critter]
 random_size = true         # Determines if critters are randomly sized or not.
-min_size = 2               # The smallest possible size of a randomly sized critter.
+min_size = 8               # The smallest possible size of a randomly sized critter.
 max_size = 100             # The largest possible size of a randomly sized critter.
 fixed_size = 24            # All critters are set to this size if random sizing is not used.
 initial_count = 5000       # The number of critters to create when the application starts.
-
-base_speed = 24
-min_speed = 8
-max_speed = 40
-
+min_speed = 8              # The minimum speed of a critter.
+max_speed = 40             # The maximum speed of a critter.
 min_energy = 50.0          # The smallest amount of initial energy for a critter.
 max_energy = 160.0         # The largest amount of initial energy for a critter.
 energy_scale = 0.0005      # A linear scaling factor for critter energy.
@@ -37,8 +34,8 @@ min_size = 6               # The smallest possible size of randomly sized food.
 max_size = 30              # The smallest possible size of randomly sized food.
 fixed_size = 18            # The size of all food if the random_size flag is false.
 energy_scale = 0.2         # Scales the amount of energy that food provides.
-respawn_rate = 1.0         # Food respawn rate in seconds.
-respawn_count = 4          # The amount of food to create at each respawn.
+respawn_rate = 0.5         # Food respawn rate in seconds.
+respawn_count = 5          # The amount of food to create at each respawn.
 initial_count = 800        # The amount of food to create when the application starts.
 
 # ============================================================================================

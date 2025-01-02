@@ -7,15 +7,17 @@ import random
 import time
 import pygame
 from config import config
-from creature_sprite import CreatureSprite
+from creature_sprite import CritterSprite
 from creature_sprite import UpdateMethod
 from food_sprite import FoodSprite
 
 pygame.init()
 pygame.font.init()
 
+
 log = config.logger
 SPAWN_BUFFER = config.spawn_buffer_size
+
 critters = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
@@ -24,7 +26,7 @@ screen = pygame.display.set_mode((config.screen_width, config.screen_height),
                                   flags=pygame.HWSURFACE | pygame.DOUBLEBUF,
                                   vsync = 1)
 
-def create_food(count: int):
+def create_initial_food(count: int):
     '''
     Create initial food for the environment.
     '''
@@ -34,7 +36,19 @@ def create_food(count: int):
         food = FoodSprite(x_pos, y_pos)
         foods.add(food)
 
-def create_critters(count: int):
+def get_initial_critter_values():
+    '''
+    Generates initial random values for critter attributes. This is only done
+    once when the application starts. After this point, genes are used to 
+    update critter attributes.
+    '''
+    energy = random.uniform(config.critter_min_energy, config.critter_max_energy)
+    size = random.randint(config.critter_min_size, config.critter_max_size)
+    speed = random.uniform(config.critter_min_speed, config.critter_max_speed)
+    config.logger.debug(f"Energy: {energy} Size: {size} Speed: {speed}")
+    return energy, size, speed
+    
+def create_initial_critters(count: int):
     '''
     Create initial critters for the environment.
     '''
@@ -42,7 +56,19 @@ def create_critters(count: int):
         x_pos = random.randint((0 + SPAWN_BUFFER), (config.screen_width - SPAWN_BUFFER))
         y_pos = random.randint((0 + SPAWN_BUFFER), (config.screen_height- SPAWN_BUFFER))
 
-        critter = CreatureSprite(x_pos, y_pos)
+        energy, size, speed = get_initial_critter_values()
+        
+        # Create genes based on these random attributes
+        genes = {
+            "size": (size - config.critter_min_size) / (config.critter_max_size - config.critter_min_size) * 2 - 1,
+            "speed": (speed - config.critter_min_speed) / (config.critter_max_speed - config.critter_min_speed) * 2 - 1,
+            "energy": (energy - config.critter_min_energy) / (config.critter_max_energy - config.critter_min_energy) * 2 - 1,
+            # ... add other genes as required
+        }
+
+        config.logger.debug(f"Genes are: {genes}")
+
+        critter = CritterSprite(x_pos, y_pos, genes)
         critters.add(critter)
 
 def render_sidebar(scr):
@@ -71,13 +97,13 @@ def spawn_food(next_spawn, rate, count):
     current_time = time.time()
     if current_time >= next_spawn:
         # Create new food items.
-        create_food(count)
+        create_initial_food(count)
         next_spawn = current_time + rate
     return next_spawn
 
 RUNNING = True
-create_food(config.food_initial_count)
-create_critters(config.critter_initial_count)
+create_initial_food(config.food_initial_count)
+create_initial_critters(config.critter_initial_count)
 
 next_food_spawn_time = time.time() + config.food_respawn_rate
 

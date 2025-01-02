@@ -157,7 +157,8 @@ class Config:
         Read-only: Returns an initial size for a critter.
         '''
         if self.critter_has_random_size:
-            return int(random.uniform(self._config['critter']['min_size'], self._config['critter']['max_size']))
+            return int(random.uniform(self._config['critter']['min_size'], 
+                                      self._config['critter']['max_size']))
         else:
             return self.critter_fixed_size
 
@@ -167,21 +168,13 @@ class Config:
         Read-only: Returns a scalar value for critter energy calculations.
         '''
         return float(self._config['critter']['energy_scale'])
-    
-    @property
-    def critter_base_speed(self) -> int:
-        '''
-        Read-only: Returns the base speed of a critter.
-        '''
-        return int(self._config['critter']['base_speed'])
-    
+
     @property
     def critter_min_speed(self) -> int:
         '''
         Read-only: Returns the minimum speed for the largest critter.
         '''
         return int(self._config['critter']['min_speed'])
-    
 
     @property
     def critter_max_speed(self) -> int:
@@ -189,7 +182,7 @@ class Config:
         Read-only: Returns the maximum speed for the msallest critter.
         '''
         return int(self._config['critter']['max_speed'])
-    
+
     @property
     def food_min_size(self) -> int:
         '''
@@ -231,8 +224,5 @@ class Config:
         Read-only: Returns the maximum speed for the msallest sprite.
         '''
         return int(self._config['food']['respawn_count'])
-
-
-
 
 config = Config()

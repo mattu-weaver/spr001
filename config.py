@@ -154,6 +154,41 @@ class Config:
         '''
         return int(self._config['sprite']['max_speed'])
     
+    @property
+    def food_min_size(self) -> int:
+        '''
+        Read-only: Returns the minimum size of food.
+        '''
+        return int(self._config['food']['min_size'])
+
+    @property
+    def food_max_size(self) -> int:
+        '''
+        Read-only: Returns the maximum size of food.
+        '''
+        return int(self._config['food']['max_size'])
+
+    @property
+    def food_energy_scale(self) -> float:
+        '''
+        Read-only: Returns an initial energy for a sprite.
+        '''
+        return float(self._config['food']['energy_scale'])
+
+    @property
+    def food_respawn_rate(self) -> int:
+        '''
+        Read-only: Returns the maximum speed for the msallest sprite.
+        '''
+        return int(self._config['food']['respawn_rate'])
+    
+    @property
+    def food_respawn_count(self) -> int:
+        '''
+        Read-only: Returns the maximum speed for the msallest sprite.
+        '''
+        return int(self._config['food']['respawn_count'])
+
 
 
 

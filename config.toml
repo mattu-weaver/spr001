@@ -9,14 +9,23 @@ level = "DEBUG"
 
 [sprite]
 random_size = true
-min_size = 6
+min_size = 2
 max_size = 100
 fixed_size = 24
 
 base_speed = 16
-min_speed = 6
+min_speed = 4
 max_speed = 24
 
 min_energy = 50.0
-max_energy = 100.0
-energy_scale = 0.0008
+max_energy = 200.0
+energy_scale = 0.0005
+
+[food]
+random_size = true
+min_size = 6
+max_size = 30
+fixed_size = 18
+energy_scale = 0.2
+respawn_rate = 1
+respawn_count = 2000

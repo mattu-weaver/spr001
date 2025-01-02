@@ -15,7 +15,7 @@ class UpdateMethod(enum.Enum):
     RANDOM = 2
     TOWARDS = 3
 
-class DefaultSprite(pygame.sprite.Sprite):
+class CreatureSprite(pygame.sprite.Sprite):
     '''
     The DefaultSprite class 
     '''
@@ -61,23 +61,38 @@ class DefaultSprite(pygame.sprite.Sprite):
         self.rect.y += self.dy
 
     def get_colour(self):
-        energy_percent = self.energy / self.initial_energy
-
-        if energy_percent < 0:
-            energy_percent = 0
+        '''
+        Returns a colour for the sprite based on its amount of remaining energy.
+        Sprites gradually change from blue to red and their energy depletes.
+        '''
+        energy_percent = max(self.energy / self.initial_energy, 0)
 
         red = int(255 * (1 - energy_percent))
-        blue = int (255 - 255 * (1 - energy_percent))
+        blue = int(255 * energy_percent)
+
+        # Ensure RGB values are within the valid range
+        red = max(0, min(red, 255))
+        blue = max(0, min(blue, 255))
 
         return (red, 0, blue)
 
     def deplete_energy(self):
-        rate = self.speed * self.size * config.sprite_energy_scale      
-        #rate = self.speed * pow(self.size, 2) * config.sprite_energy_scale
-        self.energy -= rate
-        pass
+        # Adjust the rate to make smaller critters lose energy at a balanced rate
+        rate = self.speed * self.size * config.sprite_energy_scale
+        size_factor = (config.sprite_size / self.size) ** 0.5  # Use square root to reduce the impact
+        self.energy -= rate * size_factor
 
-    def update(self, method: UpdateMethod):
+    def check_food_collision(self, food_sprites):
+        '''
+        Checks for collision with food and increases energy accordingly.
+        '''
+        collided_food = pygame.sprite.spritecollideany(self, food_sprites)
+        if collided_food:
+            energy_gain = collided_food.get_energy_value()
+            self.energy = min(self.energy + energy_gain, config.sprite_max_energy)
+            collided_food.kill()
+
+    def update(self, method: UpdateMethod, food_sprites):
         '''
         Updates a sprite before redrawing (overrides base function).
         '''
@@ -87,6 +102,7 @@ class DefaultSprite(pygame.sprite.Sprite):
 
         self.deplete_energy()
         self.handle_edge_collision()
+        self.check_food_collision(food_sprites)
 
         if self.energy < 0.0:
             self.kill()
@@ -95,7 +111,7 @@ class DefaultSprite(pygame.sprite.Sprite):
         self.image.fill(c)  # Ensure energy_percent is not negative
 
     def get_speed(self):
-        scaling_factor = 1 / math.log(self.size + 2)  # Adjust the "+ 2" to control the scaling curve
+        scaling_factor = 1 / math.log(self.size + 10)  # Adjust the "+ 2" to control the scaling curve
 
         # Calculate the scaled speed
         scaled_speed = self.base_speed * scaling_factor

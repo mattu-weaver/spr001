@@ -24,14 +24,20 @@ class CritterSprite(pygame.sprite.Sprite):
     The CritterSprite class
     """
 
+    died_of_old_age = 0
+    died_of_no_energy = 0
+
     def __init__(self, x, y, genes):
         """
         Constructor for the DefaultSprite class.
         """
         super().__init__()
+        self.age = 0
         self.dx = 0
         self.dy = 0
         self.genes = genes
+        self.died_from_old_age = False
+        self.died_no_energy = False
 
         self.size = config.critter_min_size + (genes["size"] + 1) / 2 * (
             config.critter_max_size - config.critter_min_size
@@ -48,16 +54,16 @@ class CritterSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.log = config.logger
+        self.max_age = config.critter_max_age + random.randint(0, 1000)
 
         self.angle = random.uniform(0, 2 * math.pi)
-        energy = config.critter_energy
         self.initial_energy = self.energy
 
     def handle_edge_collision(self):
         """
-        Determines if a critter is at the edge of its environment. If it is, the critter's direction is
-        changed. When a critter reaches a wall, it is reflected at the same angle as its angle of
-        incidence.
+        Determines if a critter is at the edge of its environment. If it is, the critter's 
+        direction is changed. When a critter reaches a wall, it is reflected at the same 
+        angle as its angle of incidence.
         """
         if self.rect.y <= (0 - self.size // 2) or self.rect.y >= (
             config.screen_height - self.size // 2
@@ -104,6 +110,8 @@ class CritterSprite(pygame.sprite.Sprite):
     def check_food_collision(self, food_sprites):
         """
         Checks for collision with food and increases energy accordingly.
+        @param self A reference to this class.
+        @param food_sprites The group of all existing food sprites.
         """
         collided_food = pygame.sprite.spritecollideany(self, food_sprites)
         if collided_food:
@@ -123,7 +131,16 @@ class CritterSprite(pygame.sprite.Sprite):
         self.handle_edge_collision()
         self.check_food_collision(food_sprites)
 
+        self.age += 1
+
+        if self.age >= self.max_age:
+            self.died_from_old_age = True
+            CritterSprite.died_of_old_age += 1
+            self.kill()
+
         if self.energy < 0.0:
+            self.died_no_energy = True
+            CritterSprite.died_of_no_energy += 1
             self.kill()
 
         c = self.get_colour()

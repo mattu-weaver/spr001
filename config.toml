@@ -1,16 +1,28 @@
+# Config file for the application.
+# loguru logging levels are:
+# TRACE
+# DEBUG
+# INFO
+# SUCCESS
+# WARNING
+# ERROR
+# CRITICAL
+
+# ============================================================================================
+
 [screen]
 title = "The carefree world of critters"
 width = 5120               # The width of the application window.
 height = 1440              # The height of the application window.
 back_colour = [0, 0, 0]    # The background colour of the application screen.
 spawn_buffer = 50          # A margin around the edge of the screen where food and critter spawns are not allowed.
-sidebar_width = 200        # The width of the sidebar.
+sidebar_width = 300        # The width of the sidebar.
 sidebar_colour = [0, 0, 0] # The colour of the sidebar.
 sidebar_opacity = 128      # The opacity of the sidebar.
 # ============================================================================================
 
 [loguru]
-level = "DEBUG"            # The level of logging to record.
+level = "INFO"            # The level of logging to record.
 
 # ============================================================================================
 
@@ -19,12 +31,13 @@ random_size = true         # Determines if critters are randomly sized or not.
 min_size = 8               # The smallest possible size of a randomly sized critter.
 max_size = 100             # The largest possible size of a randomly sized critter.
 fixed_size = 24            # All critters are set to this size if random sizing is not used.
-initial_count = 5000       # The number of critters to create when the application starts.
+initial_count = 100        # The number of critters to create when the application starts.
 min_speed = 8              # The minimum speed of a critter.
 max_speed = 40             # The maximum speed of a critter.
 min_energy = 50.0          # The smallest amount of initial energy for a critter.
-max_energy = 160.0         # The largest amount of initial energy for a critter.
+max_energy = 200.0         # The largest amount of initial energy for a critter.
 energy_scale = 0.0005      # A linear scaling factor for critter energy.
+old_age_threshold = 2000.0 # The mean age at which critters will die from old age.
 
 # ============================================================================================
 
@@ -35,7 +48,7 @@ max_size = 30              # The smallest possible size of randomly sized food.
 fixed_size = 18            # The size of all food if the random_size flag is false.
 energy_scale = 0.2         # Scales the amount of energy that food provides.
 respawn_rate = 0.5         # Food respawn rate in seconds.
-respawn_count = 5          # The amount of food to create at each respawn.
-initial_count = 800        # The amount of food to create when the application starts.
+respawn_count = 6          # The amount of food to create at each respawn.
+initial_count = 80         # The amount of food to create when the application starts.
 
 # ============================================================================================

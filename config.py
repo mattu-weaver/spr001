@@ -136,13 +136,19 @@ class Config:
         '''
         return bool(self._config['critter']['random_size'])
 
-
     @property
     def critter_min_size(self) -> int:
         '''
         Read-only: Returns the minimum initial size of a critter.
         '''
         return int(self._config['critter']['min_size'])
+
+    @property
+    def critter_max_age(self) -> float:
+        '''
+        Read-only: Returns the maximum age of a critter.
+        '''
+        return float(self._config['critter']['old_age_threshold'])
 
     @property
     def critter_max_size(self) -> int:

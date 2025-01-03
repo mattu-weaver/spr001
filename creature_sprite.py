@@ -38,6 +38,7 @@ class CritterSprite(pygame.sprite.Sprite):
         self.genes = genes
         self.died_from_old_age = False
         self.died_no_energy = False
+        self.last_mating_time = 0
 
         self.size = config.critter_min_size + (genes["size"] + 1) / 2 * (
             config.critter_max_size - config.critter_min_size
@@ -119,7 +120,22 @@ class CritterSprite(pygame.sprite.Sprite):
             self.energy = min(self.energy + energy_gain, config.critter_max_energy)
             collided_food.kill()
 
-    def update(self, method: UpdateMethod, food_sprites):
+    def identify_mates(self, critters, current_update):
+        if (current_update - self.last_mating_time) >= config.critter_mating_cooldown:
+            if self.energy > config.critter_min_mating_energy:
+                for other_critter in critters:
+                    if other_critter != self:
+                        if other_critter.energy > config.critter_min_mating_energy:
+                            distance = math.dist((self.rect.x, self.rect.y), (other_critter.rect.x, other_critter.rect.y))
+                            if distance <= config.critter_mating_distance:
+                                # Mating can occur!
+                                self.log.debug("Mating is taking place!")
+                                self.last_mating_time = current_update
+                                other_critter.last_mating_time = current_update
+                                break
+
+
+    def update(self, method: UpdateMethod, food_sprites, critters, update_count):
         """
         Updates a sprite before redrawing (overrides base function).
         """
@@ -131,12 +147,15 @@ class CritterSprite(pygame.sprite.Sprite):
         self.handle_edge_collision()
         self.check_food_collision(food_sprites)
 
+        self.identify_mates(critters, update_count)
+
         self.age += 1
 
-        if self.age >= self.max_age:
-            self.died_from_old_age = True
-            CritterSprite.died_of_old_age += 1
-            self.kill()
+        if config.critter_can_die_of_old_age:
+            if self.age >= self.max_age:
+                self.died_from_old_age = True
+                CritterSprite.died_of_old_age += 1
+                self.kill()
 
         if self.energy < 0.0:
             self.died_no_energy = True

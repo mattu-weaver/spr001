@@ -109,6 +109,41 @@ class Config:
         return int(self._config['critter']['initial_count'])
 
     @property
+    def critter_min_mating_energy(self) -> int:
+        '''
+        Read-only: Returns the minimum energy required to mate.
+        '''
+        return int(self._config['critter']['energy_to_mate'])
+
+    @property
+    def critter_mating_cooldown(self) -> int:
+        '''
+        Read-only: Returns the cycles that must pass before a critter can mate again.
+        '''
+        return int(self._config['critter']['mating_cooldown'])
+
+    @property
+    def critter_min_mating_age(self) -> int:
+        '''
+        Read-only: A critter's minimum mating age.
+        '''
+        return int(self._config['critter']['min_mating_age'])
+
+    @property
+    def critter_max_mating_age(self) -> int:
+        '''
+        Read-only: A critter's maximum mating age.
+        '''
+        return int(self._config['critter']['max_mating_age'])
+
+    @property
+    def critter_mating_distance(self) -> int:
+        '''
+        Read-only: Maximum distance from which critters can mate.
+        '''
+        return int(self._config['critter']['critter_mating_distance'])
+
+    @property
     def critter_min_energy(self) -> float:
         '''
         Read-only: Returns the default speed of a critter.
@@ -135,6 +170,13 @@ class Config:
         Read-only: Returns a flag that determines if critters are given a random size.
         '''
         return bool(self._config['critter']['random_size'])
+
+    @property
+    def critter_can_die_of_old_age(self) -> bool:
+        '''
+        Read-only: If True critters can die of old age, if false they cannot.
+        '''
+        return bool(self._config['critter']['old_age_active'])
 
     @property
     def critter_min_size(self) -> int:

@@ -16,6 +16,7 @@ pygame.init()
 pygame.font.init()
 
 log = config.logger
+update_count = 0
 SPAWN_BUFFER = config.spawn_buffer_size
 
 critters_group = pygame.sprite.Group()
@@ -53,7 +54,6 @@ def get_initial_critter_values():
     energy = random.uniform(config.critter_min_energy, config.critter_max_energy)
     size = random.randint(config.critter_min_size, config.critter_max_size)
     speed = random.uniform(config.critter_min_speed, config.critter_max_speed)
-    config.logger.debug(f"Energy: {energy} Size: {size} Speed: {speed}")
     return energy, size, speed
 
 
@@ -87,8 +87,6 @@ def create_initial_critters(count: int):
             - 1,
             # ... add other genes as required
         }
-
-        config.logger.debug(f"Genes are: {genes}")
 
         critter = CritterSprite(x_pos, y_pos, genes)
         critters_group.add(critter)
@@ -125,13 +123,14 @@ def render_sidebar(scr):
     )
 
     total_age = sum(critter.age for critter in critters_group)
-    average_age = total_age / len(critters_group) #if critters_group else 0
+    average_age = total_age // len(critters_group) if critters_group else 0
+
     render_text(
         scr, "Average critter's age: {average_age}", {"average_age": average_age}, 2
     )
 
     oldest_critter = max(critters_group, key=lambda critter: critter.age, default=None)
-    oldest_age = oldest_critter.age #if oldest_critter else 0
+    oldest_age = oldest_critter.age if oldest_critter else 0
     render_text(scr, "Oldest critter's age: {oldest}", {"oldest": oldest_age}, 3)
 
     render_text(
@@ -185,7 +184,7 @@ while RUNNING:
     food_group.update()
     food_group.draw(screen)
 
-    critters_group.update(UpdateMethod.SIMPLE, food_group)
+    critters_group.update(UpdateMethod.SIMPLE, food_group, critters_group, update_count)
     critters_group.draw(screen)
 
     render_sidebar(screen)
@@ -193,6 +192,8 @@ while RUNNING:
     next_food_spawn_time = spawn_food(
         next_food_spawn_time, config.food_respawn_rate, config.food_respawn_count
     )
+
+    update_count += 1
 
     clock.tick(120)
     pygame.display.flip()

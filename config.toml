@@ -22,22 +22,28 @@ sidebar_opacity = 128      # The opacity of the sidebar.
 # ============================================================================================
 
 [loguru]
-level = "INFO"            # The level of logging to record.
+level = "DEBUG"            # The level of logging to record.
 
 # ============================================================================================
 
 [critter]
-random_size = true         # Determines if critters are randomly sized or not.
-min_size = 8               # The smallest possible size of a randomly sized critter.
-max_size = 100             # The largest possible size of a randomly sized critter.
-fixed_size = 24            # All critters are set to this size if random sizing is not used.
-initial_count = 100        # The number of critters to create when the application starts.
-min_speed = 8              # The minimum speed of a critter.
-max_speed = 40             # The maximum speed of a critter.
-min_energy = 50.0          # The smallest amount of initial energy for a critter.
-max_energy = 200.0         # The largest amount of initial energy for a critter.
-energy_scale = 0.0005      # A linear scaling factor for critter energy.
-old_age_threshold = 2000.0 # The mean age at which critters will die from old age.
+random_size = true           # Determines if critters are randomly sized or not.
+min_size = 8                 # The smallest possible size of a randomly sized critter.
+max_size = 100               # The largest possible size of a randomly sized critter.
+fixed_size = 24              # All critters are set to this size if random sizing is not used.
+initial_count = 100         # The number of critters to create when the application starts.
+min_speed = 2                # The minimum speed of a critter.
+max_speed = 10               # The maximum speed of a critter.
+min_energy = 50.0            # The smallest amount of initial energy for a critter.
+max_energy = 200.0           # The largest amount of initial energy for a critter.
+energy_scale = 0.0005        # A linear scaling factor for critter energy.
+old_age_threshold = 2000.0   # The mean age at which critters will die from old age.
+old_age_active = false       # If True, critters can die of old age; if False, they cannot.
+energy_to_mate = 100         # Minimum energy required to mate.
+mating_cooldown = 1000        # Updates that must pass before a critter can mate again.
+min_mating_age = 500         # A critter's minimum mating age.
+max_mating_age = 1200        # A critter's maximum mating age.
+critter_mating_distance = 10 # Maximum mating distance for critters. 
 
 # ============================================================================================
 
@@ -47,8 +53,8 @@ min_size = 6               # The smallest possible size of randomly sized food.
 max_size = 30              # The smallest possible size of randomly sized food.
 fixed_size = 18            # The size of all food if the random_size flag is false.
 energy_scale = 0.2         # Scales the amount of energy that food provides.
-respawn_rate = 0.5         # Food respawn rate in seconds.
-respawn_count = 6          # The amount of food to create at each respawn.
-initial_count = 80         # The amount of food to create when the application starts.
+respawn_rate = 0.4         # Food respawn rate in seconds.
+respawn_count = 8          # The amount of food to create at each respawn.
+initial_count = 40         # The amount of food to create when the application starts.
 
 # ============================================================================================
